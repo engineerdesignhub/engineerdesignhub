@@ -1,1360 +1,788 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1983793556229388" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeamMaster AI | Free Online SFD &amp; BMD Calculator &amp; Beam Analysis</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Calculate Shear Force (SFD), Bending Moment (BMD) diagrams, and beam deflection online. Free civil engineering tool supporting point loads, UDLs, and moments with animated graphs, interactive beam dragging, and AI assistant.">
+    <meta name="keywords" content="SFD BMD calculator, shear force diagram, bending moment diagram, beam deflection, structural analysis, civil engineering calculator, simply supported beam, cantilever beam, fixed end reactions">
+    <meta name="author" content="BeamMaster AI">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://beammasterai.com/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://beammasterai.com/">
+    <meta property="og:title" content="BeamMaster AI | SFD &amp; BMD Calculator with Animated Structural Analysis">
+    <meta property="og:description" content="Interactive 2D beam analysis tool. Drag loads in real-time, view animated shear/moment diagrams, and consult the AI engineering assistant.">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://beammasterai.com/">
+    <meta property="twitter:title" content="BeamMaster AI | SFD &amp; BMD Calculator">
+    <meta property="twitter:description" content="Calculate and visualize beam bending, shear force, and bending moments interactively. Export PDF reports instantly.">
 
-  <!-- Google AdSense -->
-  <script async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1983793556229388"
-    crossorigin="anonymous"></script>
+    <!-- CSS stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Firebase SDK CDN (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-  <title>EngineerDesign Hub - All-in-One Construction Engineering & Design Platform</title>
-  <meta name="description" content="Premium engineering calculators, 2D floor plans, beam diagrams, electrical load charts, solar sizing, plumbing models, and schedule planners.">
-  <link rel="stylesheet" href="styles.css">
-  <!-- Lucide Icons for premium look -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div id="app-container">
-    
-    <!-- Sidebar Navigation -->
-    <aside id="sidebar">
-      <div class="sidebar-logo">
-        <div class="logo-icon">👷</div>
-        <div class="logo-text" id="nav-logo-text"> EngineerDesign Hub</div>
-      </div>
-      
-      <nav class="sidebar-nav">
-        <div class="nav-section-title">Overview</div>
-        <a class="nav-link active" onclick="switchView('home-view')">
-          <i data-lucide="layout-dashboard"></i>
-          <span id="nav-home-text">Home Dashboard</span>
-        </a>
-        
-        <div class="nav-section-title">Discipline Tools</div>
-        
-        <a class="nav-link" onclick="switchView('civil-view')">
-          <i data-lucide="activity"></i>
-          <span id="nav-civil-text">Structural Eng</span>
-        </a>
-        <a class="nav-link" onclick="switchView('arch-view')">
-          <i data-lucide="home"></i>
-          <span id="nav-arch-text">Arch & Vastu</span>
-        </a>
-        <a class="nav-link" onclick="switchView('elec-view')">
-          <i data-lucide="zap"></i>
-          <span id="nav-elec-text">Electrical & Solar</span>
-        </a>
-        <a class="nav-link" onclick="switchView('plumb-view')">
-          <i data-lucide="droplet"></i>
-          <span id="nav-plumb-text">Plumbing & Tanks</span>
-        </a>
-        <a class="nav-link" onclick="switchView('hvac-view')">
-          <i data-lucide="wind"></i>
-          <span id="nav-hvac-text">HVAC & Cooling</span>
-        </a>
-        <a class="nav-link" onclick="switchView('fire-view')">
-          <i data-lucide="flame"></i>
-          <span id="nav-fire-text">Fire Safety (NBC)</span>
-        </a>
-        <a class="nav-link" onclick="switchView('mech-view')">
-          <i data-lucide="settings"></i>
-          <span id="nav-mech-text">Mechanical Pumps</span>
-        </a>
-        
-        <div class="nav-section-title">Management</div>
-        <a class="nav-link" onclick="switchView('pm-view')">
-          <i data-lucide="briefcase"></i>
-          <span id="nav-pm-text">PM, Cost & Schedule</span>
-        </a>
-        <div class="nav-section-title">Utilities</div>
-        <a class="nav-link" onclick="switchView('gadgets-view')">
-          <i data-lucide="pocket"></i>
-          <span id="nav-gadgets-text">Engineering Gadgets</span>
-        </a>
-      </nav>
-      
-      <div class="sidebar-footer">
-        <span style="font-size: 11px; color: var(--text-muted);">Version 1.2.0 (AI Assisted)</span>
-      </div>
-    </aside>
-    
-    <!-- Main Content Area -->
-    <main>
-      <!-- Top Header Bar -->
-      <header>
-        <button class="icon-btn mobile-nav-toggle" onclick="toggleSidebar()" style="display: none;">
-          <i data-lucide="menu"></i>
-        </button>
-        <div class="header-search">
-          <i data-lucide="search" style="color: var(--text-muted); width: 18px;"></i>
-          <input type="text" placeholder="Search calculators, standards, and building codes...">
-        </div>
-        
-        <div class="header-actions">
-          <button class="icon-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
-            <i data-lucide="sun" id="theme-icon"></i>
-          </button>
-          <button class="icon-btn" onclick="window.print()" title="Print / Export PDF Report">
-            <i data-lucide="printer"></i>
-          </button>
-          <div class="profile-dropdown-container">
-            <div class="profile-trigger" onclick="toggleProfileDropdown(event)">
-              <div class="profile-avatar" id="header-avatar-initials">DP</div>
-              <span class="desktop-only" id="header-profile-name">Er. Durga Prasad</span>
-              <i data-lucide="chevron-down" style="width: 14px; margin-left: 2px;"></i>
-            </div>
-            <div class="profile-dropdown-menu" id="profile-menu">
-              <div class="profile-menu-header">
-                <strong id="menu-profile-name">Er. Durga Prasad</strong>
-                <span id="menu-profile-role">Senior Structural Eng.</span>
-              </div>
-              <hr class="dropdown-divider">
-              <a class="dropdown-item" onclick="openProfileSettingsModal()"><i data-lucide="user"></i> Edit Profile</a>
-              <a class="dropdown-item" onclick="switchView('pm-view')"><i data-lucide="briefcase"></i> My Projects</a>
-              <hr class="dropdown-divider">
-              <a class="dropdown-item" onclick="alert('PE License Active: PE-2026-9204')"><i data-lucide="award"></i> PE License Status</a>
-            </div>
-          </div>
-        </div>
-      </header>
-      
-      <!-- Content Wrapper -->
-      <div class="content-wrapper">
-        
-        <!-- ================= HOME VIEW ================= -->
-        <section id="home-view" class="view-section active">
-          <div class="premium-hero" id="premium-hero">
-            <!-- Background Canvas Container (Snapping Blueprint Grid) -->
-            <div class="hero-video-container" id="hero-video-container">
-              <canvas id="hero-canvas" style="width: 100%; height: 100%; object-fit: cover; display: block;"></canvas>
-              <div class="hero-video-overlay"></div>
-            </div>
-            
-            <!-- Hero Content Overlay -->
-            <div class="hero-content" id="hero-content">
-              <div class="hero-header-block">
-                <span class="hero-badge animate-item">ENGINEERING HUB</span>
-                <h1 class="hero-main-title animate-item">Design • Calculate • Build</h1>
-                <p class="hero-tagline animate-item">Access standard engineering code engines, dynamic CAD plots, and AI design reports.</p>
-                <button class="btn-primary btn-glow animate-item" onclick="scrollToDisciplines()">
-                  <i data-lucide="compass"></i> Explore Solvers <i data-lucide="chevron-down" style="width: 14px; margin-left: 4px;"></i>
-                </button>
-              </div>
 
-              <!-- Floating Glassmorphism Discipline Cards -->
-              <div class="hero-cards-container">
-                <div class="glass-card animate-card" onclick="switchView('civil-view')">
-                  <div class="glass-card-icon"><i data-lucide="activity"></i></div>
-                  <span class="glass-card-title">Civil Eng.</span>
+    <!-- ================= AUTH SCREEN OVERLAY ================= -->
+    <div id="auth-screen" class="auth-screen auth-visible">
+        <!-- Animated background particles -->
+        <div class="auth-bg-particles">
+            <div class="auth-particle"></div>
+            <div class="auth-particle"></div>
+            <div class="auth-particle"></div>
+            <div class="auth-particle"></div>
+            <div class="auth-particle"></div>
+            <div class="auth-particle"></div>
+        </div>
+
+        <div class="auth-container">
+            <!-- Branding -->
+            <div class="auth-brand">
+                <div class="auth-logo">
+                    <span class="logo-icon">B</span>
+                    <span>BeamMaster <span style="color: var(--primary);">AI</span></span>
                 </div>
-                <div class="glass-card animate-card" onclick="switchView('arch-view')">
-                  <div class="glass-card-icon"><i data-lucide="home"></i></div>
-                  <span class="glass-card-title">Architecture</span>
-                </div>
-                <div class="glass-card animate-card" onclick="switchView('elec-view')">
-                  <div class="glass-card-icon"><i data-lucide="zap"></i></div>
-                  <span class="glass-card-title">Electrical</span>
-                </div>
-                <div class="glass-card animate-card" onclick="switchView('plumb-view')">
-                  <div class="glass-card-icon"><i data-lucide="droplet"></i></div>
-                  <span class="glass-card-title">Plumbing</span>
-                </div>
-                <div class="glass-card animate-card" onclick="switchView('hvac-view')">
-                  <div class="glass-card-icon"><i data-lucide="wind"></i></div>
-                  <span class="glass-card-title">HVAC Heat</span>
-                </div>
-                <div class="glass-card animate-card" onclick="switchView('fire-view')">
-                  <div class="glass-card-icon"><i data-lucide="flame"></i></div>
-                  <span class="glass-card-title">Fire Safety</span>
-                </div>
-                <div class="glass-card animate-card" onclick="switchView('mech-view')">
-                  <div class="glass-card-icon"><i data-lucide="settings"></i></div>
-                  <span class="glass-card-title">Mechanical</span>
-                </div>
-                <div class="glass-card animate-card" onclick="switchView('pm-view')">
-                  <div class="glass-card-icon"><i data-lucide="briefcase"></i></div>
-                  <span class="glass-card-title">Project PM</span>
-                </div>
-              </div>
+                <p class="auth-brand-tagline">AI-Powered Structural Analysis Suite</p>
             </div>
+
+            <!-- Auth Card -->
+            <div class="auth-card">
+                <!-- Login Panel -->
+                <div id="auth-login-panel" class="auth-panel auth-panel-active">
+                    <h2 class="auth-card-title">Welcome Back</h2>
+                    <p class="auth-card-subtitle">Sign in to continue your analysis</p>
+
+                    <div class="auth-error-msg" id="auth-login-error"></div>
+
+                    <form id="auth-login-form" autocomplete="on">
+                        <div class="auth-form-group">
+                            <label for="login-email">Email Address</label>
+                            <div class="auth-input-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+                            </div>
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="login-password">Password</label>
+                            <div class="auth-input-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                <input type="password" id="login-password" placeholder="Enter your password" required autocomplete="current-password">
+                            </div>
+                        </div>
+                        <div class="auth-extras">
+                            <a href="#" id="auth-forgot-password" class="auth-forgot-link">Forgot password?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary auth-submit-btn" id="auth-login-btn">Sign In</button>
+                    </form>
+
+                    <div class="auth-divider">
+                        <span>or continue with</span>
+                    </div>
+
+                    <button type="button" class="btn-google-signin">
+                        <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                        Sign in with Google
+                    </button>
+
+                    <p class="auth-toggle-text">
+                        Don't have an account? <a href="#" class="auth-toggle-link">Create one</a>
+                    </p>
+                </div>
+
+                <!-- Signup Panel -->
+                <div id="auth-signup-panel" class="auth-panel">
+                    <h2 class="auth-card-title">Create Account</h2>
+                    <p class="auth-card-subtitle">Start analyzing beams for free</p>
+
+                    <div class="auth-error-msg" id="auth-signup-error"></div>
+
+                    <form id="auth-signup-form" autocomplete="on">
+                        <div class="auth-form-group">
+                            <label for="signup-name">Full Name</label>
+                            <div class="auth-input-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                <input type="text" id="signup-name" placeholder="John Doe" required autocomplete="name">
+                            </div>
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="signup-email">Email Address</label>
+                            <div class="auth-input-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                                <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+                            </div>
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="signup-password">Password</label>
+                            <div class="auth-input-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                <input type="password" id="signup-password" placeholder="Min. 6 characters" required autocomplete="new-password">
+                            </div>
+                        </div>
+                        <div class="auth-form-group">
+                            <label for="signup-confirm-password">Confirm Password</label>
+                            <div class="auth-input-wrapper">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+                                <input type="password" id="signup-confirm-password" placeholder="Repeat your password" required autocomplete="new-password">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary auth-submit-btn" id="auth-signup-btn">Create Account</button>
+                    </form>
+
+                    <div class="auth-divider">
+                        <span>or continue with</span>
+                    </div>
+
+                    <button type="button" class="btn-google-signin">
+                        <svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                        Sign up with Google
+                    </button>
+
+                    <p class="auth-toggle-text">
+                        Already have an account? <a href="#" class="auth-toggle-link">Sign in</a>
+                    </p>
+                </div>
+            </div>
+
+            <p class="auth-footer-text">&copy; 2026 BeamMaster AI. Secure authentication powered by Firebase.</p>
+        </div>
+    </div>
+
+    <!-- ================= APP SHELL (hidden until auth) ================= -->
+    <div id="app-shell" class="app-hidden">
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="container navbar">
+            <a href="#" class="logo" id="nav-brand">
+                <span class="logo-icon">B</span>
+                <span>BeamMaster <span style="color: var(--primary);">AI</span></span>
+            </a>
             
-            <!-- Quick Stats Counters Overlay -->
-            <div class="hero-stats-panel" id="hero-stats-panel">
-              <div class="stat-counter animate-item">
-                <div>
-                  <span class="stat-num" data-target="16">0</span><span class="stat-plus">+</span>
+            <ul class="nav-links" id="menu-links">
+                <li><a href="#" class="nav-link active" data-target="home-section">Home</a></li>
+                <li><a href="#" class="nav-link" data-target="calc-section">Calculator</a></li>
+                <li><a href="#" class="nav-link" data-target="tutorials-section">Tutorials</a></li>
+                <li><a href="#" class="nav-link" data-target="blog-section">Blog</a></li>
+                <li><a href="#" class="nav-link" data-target="about-section">About</a></li>
+                <li><a href="#" class="nav-link" data-target="contact-section">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <!-- User Badge (shown when logged in) -->
+                <div class="user-badge" id="user-badge" style="display: none;">
+                    <div class="user-avatar-wrap">
+                        <img id="user-avatar" class="user-avatar-img" src="" alt="User" style="display:none;">
+                        <span id="user-avatar-initials" class="user-avatar-initials" style="display:none;"></span>
+                    </div>
+                    <span class="user-name" id="user-display-name"></span>
+                    <button class="btn-icon btn-logout" id="btn-logout" title="Sign Out" aria-label="Sign Out">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    </button>
                 </div>
-                <span class="stat-label">Calculators</span>
-              </div>
-              <div class="stat-counter animate-item">
-                <div>
-                  <span class="stat-num" data-target="100">0</span><span class="stat-plus">%</span>
+                <!-- Theme Toggle Switch -->
+                <button class="btn-icon" id="theme-toggle" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">
+                    <svg id="theme-sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                    <svg id="theme-moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                </button>
+                <a href="#" class="btn btn-primary" id="cta-nav-start">Start Analysis</a>
+            </div>
+
+            <!-- Hamburger Burger Menu for Mobile -->
+            <div class="burger" id="burger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Shell -->
+    <main>
+        
+        <!-- ================= HOME SECTION ================= -->
+        <section id="home-section" class="page-section active">
+            <div class="hero">
+                <div class="container hero-grid">
+                    <div class="hero-content">
+                        <span class="hero-tagline">Next-Gen Beam Analysis Suite</span>
+                        <h1 class="hero-title">AI-Powered SFD &amp; BMD Calculator</h1>
+                        <p class="hero-description">
+                            Design, analyze, and review beams in real-time. Simply add support nodes, drag forces on the fly, and view animated Shear Force, Bending Moment, and elastic deflection diagrams instantly.
+                        </p>
+                        <div class="hero-buttons">
+                            <button class="btn btn-primary" id="cta-hero-start">Start Free Analysis</button>
+                            <button class="btn btn-secondary" id="cta-hero-tutorials">Browse Worked Examples</button>
+                        </div>
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <h4 id="stat-calculations">100%</h4>
+                                <p>Exact Analytical Solver</p>
+                            </div>
+                            <div class="stat-item">
+                                <h4>0 ms</h4>
+                                <p>Real-time Drag calculations</p>
+                            </div>
+                            <div class="stat-item">
+                                <h4>Free</h4>
+                                <p>For Students &amp; Engineers</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <!-- Interactive Hero Animated Beam SVG -->
+                        <svg class="svg-beam-animation" viewBox="0 0 400 200" id="hero-bending-svg">
+                            <defs>
+                                <linearGradient id="beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#3b82f6" />
+                                    <stop offset="100%" stop-color="#1d4ed8" />
+                                </linearGradient>
+                            </defs>
+                            
+                            <!-- Grids background -->
+                            <g stroke="var(--border-color)" stroke-width="0.5" opacity="0.3">
+                                <line x1="0" y1="50" x2="400" y2="50" />
+                                <line x1="0" y1="100" x2="400" y2="100" />
+                                <line x1="0" y1="150" x2="400" y2="150" />
+                                <line x1="100" y1="0" x2="100" y2="200" />
+                                <line x1="200" y1="0" x2="200" y2="200" />
+                                <line x1="300" y1="0" x2="300" y2="200" />
+                            </g>
+
+                            <!-- Bending Beam Curve (Static illustration with dynamic animations in CSS/JS) -->
+                            <path d="M 50 110 Q 200 135 350 110" fill="none" stroke="url(#beamGrad)" stroke-width="12" stroke-linecap="round" />
+                            
+                            <!-- Support representations -->
+                            <polygon points="50,116 38,135 62,135" fill="var(--text-secondary)" />
+                            <polygon points="350,116 338,135 362,135" fill="var(--text-secondary)" />
+                            <circle cx="350" cy="138" r="2.5" fill="var(--text-muted)" />
+                            
+                            <!-- Vertical Load Arrow moving -->
+                            <g id="hero-arrow-group" transform="translate(200, 45)">
+                                <line x1="0" y1="0" x2="0" y2="55" stroke="#ef4444" stroke-width="4" />
+                                <polygon points="0,58 -6,46 6,46" fill="#ef4444" />
+                                <circle cx="0" cy="0" r="6" fill="#ef4444" />
+                                <text x="0" y="-12" fill="var(--text-primary)" font-weight="bold" font-size="11" text-anchor="middle">Drag Me!</text>
+                            </g>
+                        </svg>
+                    </div>
                 </div>
-                <span class="stat-label">Code Compliant</span>
-              </div>
-              <div class="stat-counter animate-item">
-                <div>
-                  <span class="stat-num" data-target="8">0</span><span class="stat-plus"></span>
+            </div>
+
+            <!-- AdSense Ready Slot 1 -->
+            <div class="container">
+                <div class="adsense-banner">
+                    ADVERTISEMENT PLACEHOLDER (AdSense Banner - 728x90)
                 </div>
-                <span class="stat-label">Disciplines</span>
-              </div>
             </div>
-          </div>
-          
-          <div class="featured-metrics">
-            <div class="metric-card">
-              <div class="metric-icon"><i data-lucide="calculator"></i></div>
-              <div>
-                <div class="metric-title">Available Tools</div>
-                <div class="metric-val">16+</div>
-              </div>
+
+            <!-- Feature cards block -->
+            <div class="features-section">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Advanced Features for Structural Engineering</h2>
+                        <p>A full suite of tools designed to help civil engineering students learn and structural engineers verify design checks quickly.</p>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h3>Analytical Accuracy</h3>
+                            <p>Computes reactions, shear, moment, and deflections mathematically using superposition formulas, eliminating grid approximation errors.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🖱️</div>
+                            <h3>Interactive Dragging</h3>
+                            <p>Reposition point loads, distributed loads, and support locations instantly on the visual canvas. Graphs recalculate in real-time.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🤖</div>
+                            <h3>AI Assistant</h3>
+                            <p>Consult our built-in structural engineering assistant drawer. Type questions, review conventions, or request a dynamic check on your active beam.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📂</div>
+                            <h3>Professional Exports</h3>
+                            <p>Generate highly structured PDF reports with physical dimensions, support equations, peak values, and graphs suitable for project attachments.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="metric-card">
-              <div class="metric-icon"><i data-lucide="file-check"></i></div>
-              <div>
-                <div class="metric-title">Code Standards</div>
-                <div class="metric-val">NBC / IS / IE Rules</div>
-              </div>
-            </div>
-            <div class="metric-card">
-              <div class="metric-icon"><i data-lucide="printer"></i></div>
-              <div>
-                <div class="metric-title">PDF Exports</div>
-                <div class="metric-val">Print-Ready</div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Smooth Crawling Video Showcase -->
-          <div class="marquee-container-title">
-            <i data-lucide="video" style="color: var(--accent-primary)"></i>
-            <span>Interactive Tutorials & Construction Demonstrations</span>
-          </div>
-          
-          <div class="crawling-marquee-wrapper">
-            <div class="marquee-track" id="marquee-track">
-              <!-- Dynamically populated twice in app.js for infinite smooth crawl loop -->
-            </div>
-          </div>
-          
-          <h2 style="font-family: var(--font-heading); margin-bottom: 20px;">Explore by Discipline</h2>
-          <div class="home-disciplines-grid">
-            <div class="discipline-card" onclick="switchView('civil-view')">
-              <div class="disc-icon"><i data-lucide="activity"></i></div>
-              <h3 class="disc-title">Civil & Structural</h3>
-              <p class="disc-desc">Calculate shear forces, bending moments, and concrete mix formulas matching IS 10262.</p>
-            </div>
-            <div class="discipline-card" onclick="switchView('arch-view')">
-              <div class="disc-icon"><i data-lucide="home"></i></div>
-              <h3 class="disc-title">Architecture & Vastu</h3>
-              <p class="disc-desc">Generate standard 2D layouts from plot size boundaries aligned with ancient Vastu rules.</p>
-            </div>
-            <div class="discipline-card" onclick="switchView('elec-view')">
-              <div class="disc-icon"><i data-lucide="zap"></i></div>
-              <h3 class="disc-title">Electrical & Solar</h3>
-              <p class="disc-desc">Determine cable sizing, calculate voltage drops, and design PV solar layouts.</p>
-            </div>
-            <div class="discipline-card" onclick="switchView('plumb-view')">
-              <div class="disc-icon"><i data-lucide="droplet"></i></div>
-              <h3 class="disc-title">Plumbing & Tanks</h3>
-              <p class="disc-desc">Determine water demand calculations and size overhead & underground tanks.</p>
-            </div>
-            <div class="discipline-card" onclick="switchView('hvac-view')">
-              <div class="disc-icon"><i data-lucide="wind"></i></div>
-              <h3 class="disc-title">HVAC Cooling Load</h3>
-              <p class="disc-desc">Calculate heating and cooling BTU requirements and duct cross sections.</p>
-            </div>
-            <div class="discipline-card" onclick="switchView('pm-view')">
-              <div class="disc-icon"><i data-lucide="briefcase"></i></div>
-              <h3 class="disc-title">Project Management</h3>
-              <p class="disc-desc">Estimate complete material quantities, bill rates, and auto-generate Gantt schedules.</p>
-            </div>
-          </div>
         </section>
-        
-        
-        <!-- ================= CIVIL VIEW ================= -->
-        <section id="civil-view" class="view-section">
-          <div class="discipline-tabs">
-            <button class="tab-btn active" onclick="switchTab('civil', 'beam-calc')">Beam SFD/BMD Calculator</button>
-            <button class="tab-btn" onclick="switchTab('civil', 'concrete-calc')">Concrete Mix Calculator</button>
-            <button class="tab-btn" onclick="switchTab('civil', 'unit-calc')">Unit Conversion Tools</button>
-          </div>
-          
-          <div class="page-grid">
-            <!-- Left inputs / outputs column -->
-            <div>
-              <!-- Tab 1: Beam Design -->
-              <div id="civil-beam-calc" class="tab-content card">
-                <h2 class="card-title"><i data-lucide="activity"></i> Beam Shear & Bending Solver</h2>
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>Beam Span Length (L, meters)</label>
-                    <input type="number" id="beam-length" value="5" min="1" max="25" step="0.5" onchange="runBeamCalculator()">
-                  </div>
-                  <div class="form-group">
-                    <label>Support Configuration</label>
-                    <select id="beam-support" onchange="runBeamCalculator()">
-                      <option value="simply">Simply Supported</option>
-                      <option value="cantilever">Cantilever (Fixed Left)</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>Load Type</label>
-                    <select id="beam-load-type" onchange="toggleLoadInput(); runBeamCalculator();">
-                      <option value="udl">Uniformly Distributed Load (UDL)</option>
-                      <option value="point">Point Load (Concentrated)</option>
-                    </select>
-                  </div>
-                </div>
+
+
+        <!-- ================= CALCULATOR SECTION ================= -->
+        <section id="calc-section" class="page-section">
+            <div class="container calc-layout">
                 
-                <div class="form-grid">
-                  <div class="form-group" id="beam-load-val-group">
-                    <label id="load-val-label">UDL Intensity (w, kN/m)</label>
-                    <input type="number" id="beam-load" value="10" min="1" max="100" step="1" onchange="runBeamCalculator()">
-                  </div>
-                  <div class="form-group" id="beam-load-pos-group" style="display: none;">
-                    <label>Point Load Position (x, meters from left)</label>
-                    <input type="number" id="beam-load-pos" value="2.5" min="0" max="5" step="0.1" onchange="runBeamCalculator()">
-                  </div>
-                </div>
-                
-                <div class="diagram-panel">
-                  <div class="diagram-label">SFD & BMD Interactive Diagrams</div>
-                  <div class="canvas-container">
-                    <canvas id="beam-canvas" width="500" height="300"></canvas>
-                  </div>
-                </div>
-                
-                <div class="results-box">
-                  <div class="results-header">Calculated Values</div>
-                  <div class="results-grid">
-                    <div class="result-item">
-                      <span class="result-lbl">Left Support Reaction (Ra)</span>
-                      <span class="result-val" id="res-ra">25.0 kN</span>
+                <!-- Left Sidebar inputs dashboard -->
+                <div class="calc-sidebar">
+                    <div>
+                        <h3 class="calc-section-title">1. Beam Configuration</h3>
+                        
+                        <div class="form-group">
+                            <label>Beam Support Type</label>
+                            <div class="beam-type-grid">
+                                <button type="button" class="beam-type-btn active" data-type="simply_supported">Simply Supported</button>
+                                <button type="button" class="beam-type-btn" data-type="cantilever">Cantilever</button>
+                                <button type="button" class="beam-type-btn" data-type="fixed">Fixed</button>
+                                <button type="button" class="beam-type-btn" data-type="overhanging">Overhanging</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="beam-length">Total Length (m)</label>
+                            <input type="number" id="beam-length" class="input-control" value="6" min="1" max="30" step="0.5">
+                        </div>
+
+                        <!-- Conditionally visible overhanging support inputs -->
+                        <div id="overhang-supports-group" style="display: none;">
+                            <div class="inline-inputs">
+                                <div class="form-group">
+                                    <label for="support-a-pos">Support A Pos (m)</label>
+                                    <input type="number" id="support-a-pos" class="input-control" value="1" min="0" max="10" step="0.1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="support-b-pos">Support B Pos (m)</label>
+                                    <input type="number" id="support-b-pos" class="input-control" value="5" min="0" max="10" step="0.1">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Right Support Reaction (Rb)</span>
-                      <span class="result-val" id="res-rb">25.0 kN</span>
+
+                    <div>
+                        <h3 class="calc-section-title">2. Material &amp; Section (EI)</h3>
+                        
+                        <div class="form-group">
+                            <label for="beam-material">Preset Material</label>
+                            <select id="beam-material" class="input-control">
+                                <option value="steel" selected>Structural Steel (E = 200 GPa)</option>
+                                <option value="concrete">Concrete Grade M25 (E = 25 GPa)</option>
+                                <option value="timber">Timber/Wood (E = 12 GPa)</option>
+                                <option value="custom">Custom Parameters</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="beam-section">Preset Section Profile</label>
+                            <select id="beam-section" class="input-control">
+                                <option value="w_section" selected>Universal I-Beam (I = 5000 cm⁴)</option>
+                                <option value="rect_section">Concrete Rectangle (300mm x 500mm, I = 31250 cm⁴)</option>
+                                <option value="circ_section">Solid Circle (200mm diameter, I = 7854 cm⁴)</option>
+                                <option value="custom">Custom Inertia</option>
+                            </select>
+                        </div>
+
+                        <!-- Custom E and I inputs -->
+                        <div id="custom-ei-inputs" style="display: none;">
+                            <div class="inline-inputs">
+                                <div class="form-group">
+                                    <label for="custom-e-val">E (GPa)</label>
+                                    <input type="number" id="custom-e-val" class="input-control" value="200" min="1" max="1000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="custom-i-val">I (cm⁴)</label>
+                                    <input type="number" id="custom-i-val" class="input-control" value="5000" min="1" max="1000000">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Max Shear Force (Vmax)</span>
-                      <span class="result-val" id="res-vmax">25.0 kN</span>
+
+                    <div>
+                        <h3 class="calc-section-title">3. Active Loads</h3>
+                        <div class="load-list-container" id="active-loads-list">
+                            <!-- Populated dynamically via JS -->
+                        </div>
                     </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Max Bending Moment (Mmax)</span>
-                      <span class="result-val" id="res-mmax">31.25 kNm</span>
+
+                    <div>
+                        <h3 class="calc-section-title">4. Add Load Force</h3>
+                        
+                        <div class="form-group">
+                            <label for="load-type">Load Force Type</label>
+                            <select id="load-type" class="input-control">
+                                <option value="point" selected>Point Load (kN)</option>
+                                <option value="udl">Uniform Distributed Load (kN/m)</option>
+                                <option value="moment">Concentrated Moment (kNm)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label id="load-mag-label" for="load-magnitude">Magnitude (kN)</label>
+                            <input type="number" id="load-magnitude" class="input-control" value="15" step="1">
+                        </div>
+
+                        <div class="form-group" id="load-single-pos-group">
+                            <label for="load-position">Position x (m)</label>
+                            <input type="number" id="load-position" class="input-control" value="3" min="0" max="6" step="0.1">
+                        </div>
+
+                        <div class="inline-inputs" id="load-span-pos-group" style="display: none;">
+                            <div class="form-group">
+                                <label for="load-start">Start x (m)</label>
+                                <input type="number" id="load-start" class="input-control" value="0" min="0" max="6" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="load-end">End x (m)</label>
+                                <input type="number" id="load-end" class="input-control" value="3" min="0" max="6" step="0.1">
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-accent btn-sm" style="width:100%;" id="btn-add-load">Add Load</button>
                     </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Tab 2: Concrete Mix design -->
-              <div id="civil-concrete-calc" class="tab-content card" style="display: none;">
-                <h2 class="card-title"><i data-lucide="layers"></i> Concrete Mix Designer (IS 10262)</h2>
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>Concrete Grade</label>
-                    <select id="concrete-grade" onchange="runConcreteCalculator()">
-                      <option value="M10">M10 (Nominal)</option>
-                      <option value="M15">M15 (Nominal)</option>
-                      <option value="M20">M20 (Standard)</option>
-                      <option value="M25">M25 (Standard)</option>
-                      <option value="M30">M30 (Design)</option>
-                      <option value="M35">M35 (High Strength)</option>
-                      <option value="M40">M40 (High Strength)</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>Required Volume (m³)</label>
-                    <input type="number" id="concrete-volume" value="5" min="0.1" max="1000" step="0.5" onchange="runConcreteCalculator()">
-                  </div>
-                  <div class="form-group">
-                    <label>Dry Volume Safety Factor</label>
-                    <input type="number" id="concrete-factor" value="1.54" min="1.2" max="1.8" step="0.01" onchange="runConcreteCalculator()">
-                  </div>
-                </div>
-                
-                <div class="diagram-panel">
-                  <div class="diagram-label">Material Proportions Volume Chart</div>
-                  <div class="canvas-container">
-                    <canvas id="concrete-canvas" width="500" height="250"></canvas>
-                  </div>
-                </div>
-                
-                <div class="results-box">
-                  <div class="results-header">Estimated Weights (Density Proportions)</div>
-                  <div class="results-grid">
-                    <div class="result-item">
-                      <span class="result-lbl">Cement Required</span>
-                      <span class="result-val" id="res-cement">1600 kg</span>
+
+                    <!-- Project Saves Manager -->
+                    <div>
+                        <h3 class="calc-section-title">5. Save/Load Project</h3>
+                        <div class="form-group">
+                            <input type="text" id="project-name-input" class="input-control" placeholder="Project Name..." style="margin-bottom: 0.5rem;">
+                            <button type="button" class="btn btn-secondary btn-sm" style="width:100%; margin-bottom:0.5rem;" id="btn-save-project">Save to Browser</button>
+                        </div>
+                        <div class="form-group" id="saved-projects-dropdown-group" style="display:none;">
+                            <label for="saved-projects-select">Load Saved Project</label>
+                            <select id="saved-projects-select" class="input-control" style="margin-bottom: 0.5rem;">
+                                <option value="">Select Project...</option>
+                            </select>
+                            <button type="button" class="btn btn-danger btn-sm" style="width:100%;" id="btn-delete-project">Delete Selected</button>
+                        </div>
                     </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Sand Required</span>
-                      <span class="result-val" id="res-sand">3975 kg</span>
+                </div>
+
+                <!-- Right Visualizer results dashboard -->
+                <div class="calc-main">
+                    
+                    <!-- Visual beam editor card -->
+                    <div class="visualizer-card">
+                        <div class="canvas-container">
+                            <canvas id="beamCanvas"></canvas>
+                        </div>
+                        <div class="canvas-instructions">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                            <span>Interact: Drag arrows horizontally to move forces. Drag supports (for overhanging beams) to reposition reactions.</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                        </div>
                     </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Coarse Aggregate</span>
-                      <span class="result-val" id="res-agg">5675 kg</span>
+
+                    <!-- Results stats blocks -->
+                    <div class="results-grid">
+                        <!-- Reactions -->
+                        <div class="result-stat-card">
+                            <h5>Support Reactions</h5>
+                            <div class="result-stat-val" id="res-reactions" style="font-size: 1.15rem; line-height: 1.4;">
+                                R_A = 0.00 kN<br>R_B = 0.00 kN
+                            </div>
+                            <span class="result-stat-detail">Static equilibrium results</span>
+                        </div>
+                        <!-- Max SF -->
+                        <div class="result-stat-card">
+                            <h5>Max Shear Force</h5>
+                            <div class="result-stat-val" id="res-max-sf">0.00 kN</div>
+                            <span class="result-stat-detail" id="res-max-sf-x">occurs at x = 0.0 m</span>
+                        </div>
+                        <!-- Max BM -->
+                        <div class="result-stat-card">
+                            <h5>Max Bending Moment</h5>
+                            <div class="result-stat-val" id="res-max-bm">0.00 kNm</div>
+                            <span class="result-stat-detail" id="res-max-bm-x">occurs at x = 0.0 m</span>
+                        </div>
+                        <!-- Max Deflection -->
+                        <div class="result-stat-card">
+                            <h5>Max Deflection</h5>
+                            <div class="result-stat-val" id="res-max-defl">0.00 mm</div>
+                            <span class="result-stat-detail" id="res-max-defl-x">occurs at x = 0.0 m</span>
+                        </div>
                     </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Water Required</span>
-                      <span class="result-val" id="res-water">930 Litres</span>
+
+                    <!-- Chart diagrams card -->
+                    <div class="diagrams-card" id="analysis-diagrams-card">
+                        
+                        <!-- SFD -->
+                        <div class="chart-header">
+                            <h4>Shear Force Diagram (SFD)</h4>
+                            <div class="chart-controls">
+                                <span class="badge-point" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; border-radius: 4px;" id="val-sf-peak">V_max = 0.0 kN</span>
+                            </div>
+                        </div>
+                        <div class="diagram-wrapper">
+                            <canvas id="sfdChartCanvas"></canvas>
+                        </div>
+
+                        <!-- BMD -->
+                        <div class="chart-header" style="margin-top: 2rem;">
+                            <h4>Bending Moment Diagram (BMD)</h4>
+                            <div class="chart-controls">
+                                <span class="badge-udl" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; border-radius: 4px;" id="val-bm-peak">M_max = 0.0 kNm</span>
+                            </div>
+                        </div>
+                        <div class="diagram-wrapper">
+                            <canvas id="bmdChartCanvas"></canvas>
+                        </div>
+
+                        <!-- Deflection -->
+                        <div class="chart-header" style="margin-top: 2rem;">
+                            <h4>Deflection Curve</h4>
+                            <div class="chart-controls">
+                                <span class="badge-moment" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; border-radius: 4px;" id="val-defl-peak">δ_max = 0.0 mm</span>
+                            </div>
+                        </div>
+                        <div class="diagram-wrapper">
+                            <canvas id="deflectionChartCanvas"></canvas>
+                        </div>
                     </div>
-                  </div>
+
+                    <!-- Step-by-Step equations -->
+                    <div class="diagrams-card" style="margin-top: 0.5rem;">
+                        <h4 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Step-by-Step Analytical Calculations</h4>
+                        <div class="modal-body" id="calculations-report-body" style="font-size: 0.9rem; line-height: 1.6;">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Exporters block -->
+                    <div class="export-panel">
+                        <div class="export-desc">
+                            <h3>Generate Analysis Reports</h3>
+                            <p>Export your calculator layout, support forces list, and charts to PDF or Excel CSV sheet.</p>
+                        </div>
+                        <div class="export-buttons">
+                            <button class="btn btn-secondary" id="btn-export-excel">Export Excel CSV</button>
+                            <button class="btn btn-primary" id="btn-export-pdf">Export PDF Report</button>
+                        </div>
+                    </div>
+
                 </div>
-              </div>
-              
-              <!-- Tab 3: Unit Converter -->
-              <div id="civil-unit-calc" class="tab-content card" style="display: none;">
-                <h2 class="card-title"><i data-lucide="scale"></i> Engineering Unit Converter</h2>
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>Conversion Category</label>
-                    <select id="unit-category" onchange="updateUnitConverter()">
-                      <option value="length">Length (m, ft, in, mm)</option>
-                      <option value="area">Area (m², ft², Acre, Hectare)</option>
-                      <option value="volume">Volume (m³, ft³, Litre, Gallon)</option>
-                      <option value="stress">Stress & Pressure (MPa, psi, kg/cm²)</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>Source Value</label>
-                    <input type="number" id="unit-source-val" value="10" oninput="runUnitConversion()">
-                  </div>
-                </div>
-                
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>From Unit</label>
-                    <select id="unit-from" onchange="runUnitConversion()"></select>
-                  </div>
-                  <div class="form-group">
-                    <label>To Unit</label>
-                    <select id="unit-to" onchange="runUnitConversion()"></select>
-                  </div>
-                </div>
-                
-                <div class="results-box">
-                  <div class="results-header">Conversion Result</div>
-                  <div style="font-family: var(--font-heading); font-size: 28px; font-weight: 800; color: var(--accent-secondary); text-align: center; padding: 10px 0;" id="unit-res-val">
-                    32.81 ft
-                  </div>
-                </div>
-              </div>
             </div>
-            
-            <!-- Dynamic AI Explanation Panel -->
-            <div class="ai-helper-aside">
-              <div class="card ai-card">
-                <div class="ai-header">
-                  <i data-lucide="cpu"></i>
-                  <span>AI Structural Assistant</span>
-                </div>
-                <div class="ai-formula-box" id="civil-ai-formula">
-                  Ra = wL/2 = 25.0 kN
-                </div>
-                <div class="ai-explanation-content" id="civil-ai-exp">
-                  Calculating a standard beam load layout. Simply supported beam subjected to uniform loads shows maximum shears at endpoints and maximum bending moment exactly at midspan.
-                </div>
-                <span class="ai-code-ref" id="civil-ai-code">IS 456-2000 (Indian Standard)</span>
-              </div>
-            </div>
-          </div>
         </section>
-        
-        
-        <!-- ================= ARCHITECTURE VIEW ================= -->
-        <section id="arch-view" class="view-section">
-          <div class="discipline-tabs">
-            <button class="tab-btn active" onclick="switchTab('arch', 'plan-gen')">Plot size → Floor Plan Suggestions</button>
-            <button class="tab-btn" onclick="switchTab('arch', 'fsi-calc')">FSI/FAR Calculator</button>
-          </div>
-          
-          <div class="page-grid">
-            <div>
-              <!-- Tab 1: Floor Plan Generator -->
-              <div id="arch-plan-gen" class="tab-content card">
-                <h2 class="card-title"><i data-lucide="home"></i> 2D Layout & Floor Plan Generator</h2>
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>Plot Width (frontage, feet)</label>
-                    <input type="number" id="plot-width" value="30" min="15" max="150" step="1" onchange="runArchPlanGenerator()">
-                  </div>
-                  <div class="form-group">
-                    <label>Plot Depth (feet)</label>
-                    <input type="number" id="plot-depth" value="50" min="15" max="150" step="1" onchange="runArchPlanGenerator()">
-                  </div>
-                  <div class="form-group">
-                    <label>Plot Facing Direction</label>
-                    <select id="plot-facing" onchange="runArchPlanGenerator()">
-                      <option value="eastFacing">East Facing</option>
-                      <option value="northFacing">North Facing</option>
-                      <option value="westFacing">West Facing</option>
-                      <option value="southFacing">South Facing</option>
-                    </select>
-                  </div>
+
+
+        <!-- ================= TUTORIALS SECTION ================= -->
+        <section id="tutorials-section" class="page-section">
+            <div class="container">
+                <div class="section-header" style="margin-bottom: 2rem;">
+                    <h2>Beam Analysis Worked Examples</h2>
+                    <p>Learn structural analysis through classic step-by-step presets. Click a card to read the theory, or load it directly in the calculator to run live checks.</p>
                 </div>
                 
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>BHK Layout Requirements</label>
-                    <select id="plot-bhk" onchange="runArchPlanGenerator()">
-                      <option value="1">1 BHK Layout</option>
-                      <option value="2" selected>2 BHK Layout</option>
-                      <option value="3">3 BHK Layout</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>Vastu Shastra Alignment</label>
-                    <select id="plot-vastu" onchange="runArchPlanGenerator()">
-                      <option value="on">Align rooms to Vastu directions</option>
-                      <option value="off">Maximize floor efficiency (Independent)</option>
-                    </select>
-                  </div>
+                <div class="grid-cards-layout" id="tutorials-list-container">
+                    <!-- Populated via JS -->
                 </div>
-                
-                <div class="diagram-panel" style="min-height: 380px;">
-                  <div class="diagram-label">Generated 2D Floor Plan layout</div>
-                  <div class="canvas-container" style="max-width: 480px; aspect-ratio: 1/1; background-color: var(--bg-primary); border: 1px solid var(--border-glass);">
-                    <svg id="arch-plan-svg" viewBox="0 0 400 400" width="100%" height="100%"></svg>
-                  </div>
-                </div>
-                
-                <div class="results-box">
-                  <div class="results-header">Plot & Setback Analysis</div>
-                  <div class="results-grid">
-                    <div class="result-item">
-                      <span class="result-lbl">Total Plot Area</span>
-                      <span class="result-val" id="arch-res-area">1500 sq ft</span>
-                    </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Front Setback (Mandatory)</span>
-                      <span class="result-val" id="arch-res-front">5.0 ft</span>
-                    </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Rear & Side Setbacks</span>
-                      <span class="result-val" id="arch-res-sides">3.0 ft</span>
-                    </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Net Plinth Area (Usable)</span>
-                      <span class="result-val" id="arch-res-plinth">1056 sq ft</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Tab 2: FSI/FAR Calculator -->
-              <div id="arch-fsi-calc" class="tab-content card" style="display: none;">
-                <h2 class="card-title"><i data-lucide="percent"></i> FAR / FSI Compliance Checker</h2>
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>Total Plot Area (sq ft)</label>
-                    <input type="number" id="fsi-plot-area" value="2000" min="500" max="100000" step="50" onchange="runFSICalculator()">
-                  </div>
-                  <div class="form-group">
-                    <label>Road Width in Front (meters)</label>
-                    <input type="number" id="fsi-road-width" value="9" min="3" max="60" step="1" onchange="runFSICalculator()">
-                  </div>
-                  <div class="form-group">
-                    <label>Total Proposed Built-up Area (sq ft)</label>
-                    <input type="number" id="fsi-builtup" value="3200" min="100" max="500000" step="50" onchange="runFSICalculator()">
-                  </div>
-                </div>
-                
-                <div class="results-box">
-                  <div class="results-header">Compliance Results</div>
-                  <div class="results-grid">
-                    <div class="result-item">
-                      <span class="result-lbl">Proposed FAR/FSI Ratio</span>
-                      <span class="result-val" id="arch-fsi-ratio">1.60</span>
-                    </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Max Permissible FSI</span>
-                      <span class="result-val" id="arch-fsi-allowed">2.00</span>
-                    </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Compliance Status</span>
-                      <span class="result-val" id="arch-fsi-status" style="color: var(--accent-success)">COMPLIANT</span>
-                    </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Remaining Build Capacity</span>
-                      <span class="result-val" id="arch-fsi-diff">+800 sq ft</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-            
-            <div class="ai-helper-aside">
-              <div class="card ai-card">
-                <div class="ai-header">
-                  <i data-lucide="cpu"></i>
-                  <span>AI Architecture Advisor</span>
-                </div>
-                <div class="ai-formula-box" id="arch-ai-formula">
-                  FAR = Total Floor Area / Plot Area
-                </div>
-                <div class="ai-explanation-content" id="arch-ai-exp">
-                  Based on a North-facing plot size. The master bedroom should reside in Nairutya (South-West) to provide security and proper atmospheric drafts, while the kitchen occupies Agneya (South-East).
-                </div>
-                <span class="ai-code-ref" id="arch-ai-code">NBC 2016 / Local Bye-Laws</span>
-              </div>
-            </div>
-          </div>
         </section>
-        
-        
-        <!-- ================= ELECTRICAL VIEW ================= -->
-        <section id="elec-view" class="view-section">
-          <div class="discipline-tabs">
-            <button class="tab-btn active" onclick="switchTab('elec', 'solar-sizer')">Solar Sizing Calculator</button>
-            <button class="tab-btn" onclick="switchTab('elec', 'cable-sizer')">Cable Sizing & Voltage Drop</button>
-          </div>
-          
-          <div class="page-grid">
-            <div>
-              <!-- Tab 1: Solar Sizing -->
-              <div id="elec-solar-sizer" class="tab-content card">
-                <h2 class="card-title"><i data-lucide="sun"></i> Solar PV & Battery Size Calculator</h2>
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>Avg Monthly Consumption (kWh/Units)</label>
-                    <input type="number" id="solar-units" value="450" min="50" max="5000" step="10" onchange="runSolarCalculator()">
-                  </div>
-                  <div class="form-group">
-                    <label>Average Daily Sun Hours</label>
-                    <input type="number" id="solar-hours" value="4.5" min="2" max="8" step="0.1" onchange="runSolarCalculator()">
-                  </div>
-                  <div class="form-group">
-                    <label>Available Roof Area (sq ft)</label>
-                    <input type="number" id="solar-area" value="500" min="50" max="10000" step="10" onchange="runSolarCalculator()">
-                  </div>
+
+
+        <!-- ================= BLOG SECTION ================= -->
+        <section id="blog-section" class="page-section">
+            <div class="container">
+                <div class="section-header" style="margin-bottom: 2rem;">
+                    <h2>BeamMaster Engineering Blog</h2>
+                    <p>Read our tutorials and design articles in Reinforced Concrete Concrete (RCC), structural steel profiles, strength of materials, and engineering mechanics.</p>
+                </div>
+
+                <div class="grid-cards-layout" id="blog-list-container">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= ABOUT SECTION ================= -->
+        <section id="about-section" class="page-section">
+            <div class="container static-page-layout">
+                <h1>About BeamMaster AI</h1>
+                <p>BeamMaster AI is a state-of-the-art, open-source civil engineering platform dedicated to providing student architects, civil engineering undergraduates, teachers, and structural designers with highly accessible, beautiful, and computationally precise tools.</p>
+                
+                <section>
+                    <h3>The Core Philosophy</h3>
+                    <p>Conventional structural software packages are either overly complex (like large FEM packages) or look outdated and hard to navigate. BeamMaster AI merges **beautiful responsive styling** with **analytical structural calculations**, allowing engineers to rapidly prototype calculations and students to visualize instantly how beam equations translate into shapes.</p>
+                </section>
+                
+                <section>
+                    <h3>Technical Engine</h3>
+                    <p>Calculations in BeamMaster AI are solved analytically. By using closed-form solutions (like mathematical superposition matrices for support forces and direct double integration algorithms on bending moments), we ensure zero rounding error, accurate locations of shear changes, and smooth curvature calculations for deflection curves.</p>
+                </section>
+                
+                <section>
+                    <h3>Contact Information</h3>
+                    <p>Have recommendations, bug reports, or feature requests? Contact our development team at <a href="mailto:support@beammasterai.com">support@beammasterai.com</a>.</p>
+                </section>
+            </div>
+        </section>
+
+
+        <!-- ================= CONTACT SECTION ================= -->
+        <section id="contact-section" class="page-section">
+            <div class="container static-page-layout" style="max-width: 1000px;">
+                <div class="section-header">
+                    <h2>Get in Touch with BeamMaster AI</h2>
+                    <p>Have questions about structural formulas, custom feedback, or business collaborations? Fill out the form or write to us directly.</p>
                 </div>
                 
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>Battery Storage Backup Required?</label>
-                    <select id="solar-battery" onchange="runSolarCalculator()">
-                      <option value="none">Grid Tied (No Battery)</option>
-                      <option value="1">1 Day Backup (Off-Grid)</option>
-                      <option value="2">2 Days Backup (Off-Grid)</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>PV Sizing Factor (Loss Safety)</label>
-                    <input type="number" id="solar-safety" value="1.25" min="1.0" max="1.5" step="0.05" onchange="runSolarCalculator()">
-                  </div>
-                </div>
-                
-                <div class="results-box">
-                  <div class="results-header">Sizing Output Details</div>
-                  <div class="results-grid">
-                    <div class="result-item">
-                      <span class="result-lbl">Recommended PV Size</span>
-                      <span class="result-val" id="elec-res-pv">4.17 kWp</span>
-                    </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Number of Panels (400W)</span>
-                      <span class="result-val" id="elec-res-panels">11 Panels</span>
-                    </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Estimated Battery capacity</span>
-                      <span class="result-val" id="elec-res-batt">None</span>
-                    </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Roof Area Required</span>
-                      <span class="result-val" id="elec-res-roof">417 sq ft</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Tab 2: Cable Size and Voltage Drop -->
-              <div id="elec-cable-sizer" class="tab-content card" style="display: none;">
-                <h2 class="card-title"><i data-lucide="zap"></i> Cable Sizing and Voltage Drop Solver</h2>
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>Load Current (Amperes)</label>
-                    <input type="number" id="cable-current" value="32" min="1" max="500" step="1" onchange="runCableCalculator()">
-                  </div>
-                  <div class="form-group">
-                    <label>Line Run Length (one-way, meters)</label>
-                    <input type="number" id="cable-length" value="45" min="1" max="1000" step="5" onchange="runCableCalculator()">
-                  </div>
-                  <div class="form-group">
-                    <label>Operating Voltage (V)</label>
-                    <select id="cable-voltage" onchange="runCableCalculator()">
-                      <option value="230">230V Single Phase</option>
-                      <option value="415">415V Three Phase</option>
-                    </select>
-                  </div>
-                </div>
-                
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>Conductor Material</label>
-                    <select id="cable-material" onchange="runCableCalculator()">
-                      <option value="copper">Copper (Cu)</option>
-                      <option value="aluminum">Aluminum (Al)</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>Max Allowed Voltage Drop (%)</label>
-                    <input type="number" id="cable-drop-limit" value="3" min="1" max="10" step="0.5" onchange="runCableCalculator()">
-                  </div>
-                </div>
-                
-                <div class="results-box">
-                  <div class="results-header">Calculated Sizing Specifications</div>
-                  <div class="results-grid">
-                    <div class="result-item">
-                      <span class="result-lbl">Required Cable Cross-Section</span>
-                      <span class="result-val" id="elec-res-size">6.0 mm²</span>
-                    </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Calculated Voltage Drop</span>
-                      <span class="result-val" id="elec-res-drop">1.48 V (0.64%)</span>
-                    </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Safe Continuous Ampacity</span>
-                      <span class="result-val" id="elec-res-amp">36.0 Amps</span>
-                    </div>
-                    <div class="result-item">
-                      <span class="result-lbl">Cable Safety Check</span>
-                      <span class="result-val" id="elec-res-check" style="color: var(--accent-success);">PASS</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="ai-helper-aside">
-              <div class="card ai-card">
-                <div class="ai-header">
-                  <i data-lucide="cpu"></i>
-                  <span>AI Electrical Planner</span>
-                </div>
-                <div class="ai-formula-box" id="elec-ai-formula">
-                  PV (kW) = Monthly Units / (30 * Sun Hours)
-                </div>
-                <div class="ai-explanation-content" id="elec-ai-exp">
-                  Solar photovoltaic calculator output considers standard derating factors (inverter, shading, temperature, and wiring drops) totalling roughly 25% system energy degradation.
-                </div>
-                <span class="ai-code-ref" id="elec-ai-code">NEC India (SP 30) / IE Rules</span>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        
-        <!-- ================= PLUMBING VIEW ================= -->
-        <section id="plumb-view" class="view-section">
-          <div class="page-grid">
-            <div class="card">
-              <h2 class="card-title"><i data-lucide="droplet"></i> Water Storage & Tank Size Sizer</h2>
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Total Number of Occupants</label>
-                  <input type="number" id="plumb-occupants" value="8" min="1" max="500" step="1" onchange="runPlumbingCalculator()">
-                </div>
-                <div class="form-group">
-                  <label>Demand Rate (litres/person/day)</label>
-                  <input type="number" id="plumb-rate" value="135" min="45" max="300" step="5" onchange="runPlumbingCalculator()">
-                </div>
-                <div class="form-group">
-                  <label>Storage Backup Days</label>
-                  <input type="number" id="plumb-days" value="2" min="1" max="7" step="1" onchange="runPlumbingCalculator()">
-                </div>
-              </div>
-              
-              <div class="diagram-panel">
-                <div class="diagram-label">Estimated Water Tank Dimensions (m)</div>
-                <div class="canvas-container">
-                  <canvas id="tank-canvas" width="500" height="250"></canvas>
-                </div>
-              </div>
-              
-              <div class="results-box">
-                <div class="results-header">Calculated Capacity</div>
-                <div class="results-grid">
-                  <div class="result-item">
-                    <span class="result-lbl">Total Water Storage Requirement</span>
-                    <span class="result-val" id="plumb-res-total">2,160 Litres</span>
-                  </div>
-                  <div class="result-item">
-                    <span class="result-lbl">Underground Sump (60%)</span>
-                    <span class="result-val" id="plumb-res-sump">1,296 Litres</span>
-                  </div>
-                  <div class="result-item">
-                    <span class="result-lbl">Overhead Tank (40%)</span>
-                    <span class="result-val" id="plumb-res-oht">864 Litres</span>
-                  </div>
-                  <div class="result-item">
-                    <span class="result-lbl">Sump Footprint (H=1.2m)</span>
-                    <span class="result-val" id="plumb-res-dim">1.1m x 1.0m</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="ai-helper-aside">
-              <div class="card ai-card">
-                <div class="ai-header">
-                  <i data-lucide="cpu"></i>
-                  <span>AI Plumbing Consultant</span>
-                </div>
-                <div class="ai-formula-box" id="plumb-ai-formula">
-                  V = Occupants * Rate * Days
-                </div>
-                <div class="ai-explanation-content" id="plumb-ai-exp">
-                  Underground sumps are sized to secure 60-70% of total site reserve water requirements, allowing the overhead tank to remain smaller for structural loading benefits on top-tier columns.
-                </div>
-                <span class="ai-code-ref" id="plumb-ai-code">IS 1172 / Uniform Plumbing Code</span>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        
-        <!-- ================= HVAC VIEW ================= -->
-        <section id="hvac-view" class="view-section">
-          <div class="page-grid">
-            <div class="card">
-              <h2 class="card-title"><i data-lucide="wind"></i> AC Tonnage & Heat Load Calculator</h2>
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Room Length (meters)</label>
-                  <input type="number" id="hvac-length" value="6" min="2" max="50" step="0.5" onchange="runHVACCalculator()">
-                </div>
-                <div class="form-group">
-                  <label>Room Width (meters)</label>
-                  <input type="number" id="hvac-width" value="4.5" min="2" max="50" step="0.5" onchange="runHVACCalculator()">
-                </div>
-                <div class="form-group">
-                  <label>Room Height (meters)</label>
-                  <input type="number" id="hvac-height" value="3" min="2" max="10" step="0.1" onchange="runHVACCalculator()">
-                </div>
-              </div>
-              
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Climate / Sunlight Zone</label>
-                  <select id="hvac-climate" onchange="runHVACCalculator()">
-                    <option value="temperate">Moderate / Shaded (24 BTU/m³)</option>
-                    <option value="normal" selected>Normal / Moderate Sun (30 BTU/m³)</option>
-                    <option value="tropical">Hot / Direct Sun (36 BTU/m³)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Typical Occupancy Count</label>
-                  <input type="number" id="hvac-people" value="4" min="1" max="100" step="1" onchange="runHVACCalculator()">
-                </div>
-                <div class="form-group">
-                  <label>Electrical Appliances (Watts)</label>
-                  <input type="number" id="hvac-appliances" value="600" min="0" max="50000" step="100" onchange="runHVACCalculator()">
-                </div>
-              </div>
-              
-              <div class="results-box">
-                <div class="results-header">Calculated AC Sizing</div>
-                <div class="results-grid">
-                  <div class="result-item">
-                    <span class="result-lbl">Calculated Cooling Load</span>
-                    <span class="result-val" id="hvac-res-load">14,244 BTU/hr</span>
-                  </div>
-                  <div class="result-item">
-                    <span class="result-lbl">Recommended AC Tonnage</span>
-                    <span class="result-val" id="hvac-res-ton">1.2 Tons</span>
-                  </div>
-                  <div class="result-item">
-                    <span class="result-lbl">Equivalent kW Capacity</span>
-                    <span class="result-val" id="hvac-res-kw">4.17 kW</span>
-                  </div>
-                  <div class="result-item">
-                    <span class="result-lbl">Min Ventilation Required</span>
-                    <span class="result-val" id="hvac-res-vent">60 CFM</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="ai-helper-aside">
-              <div class="card ai-card">
-                <div class="ai-header">
-                  <i data-lucide="cpu"></i>
-                  <span>AI Thermal Engineer</span>
-                </div>
-                <div class="ai-formula-box" id="hvac-ai-formula">
-                  BTU = Vol * Climate + (People * 500) + (Watts * 3.4)
-                </div>
-                <div class="ai-explanation-content" id="hvac-ai-exp">
-                  Heat load accounts for: volume based thermal transfer, heat generated from human metabolism (avg 500 BTU/person), and power dissipated by lights/laptops (3.41 BTU/Watt).
-                </div>
-                <span class="ai-code-ref" id="hvac-ai-code">ASHRAE Standard 55 / 62.1</span>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        
-        <!-- ================= FIRE VIEW ================= -->
-        <section id="fire-view" class="view-section">
-          <div class="page-grid">
-            <div class="card">
-              <h2 class="card-title"><i data-lucide="flame"></i> Fire Protection & Exit Size Requirements</h2>
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Occupancy Building Type</label>
-                  <select id="fire-occupancy" onchange="runFireCalculator()">
-                    <option value="residential">Residential Apartments</option>
-                    <option value="commercial">Commercial / Office Blocks</option>
-                    <option value="assembly" selected>Assembly (Halls / Auditoriums)</option>
-                    <option value="educational">Educational (Schools)</option>
-                    <option value="industrial">Industrial / Factories</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Floor Area (square meters)</label>
-                  <input type="number" id="fire-area" value="600" min="10" max="50000" step="10" onchange="runFireCalculator()">
-                </div>
-              </div>
-              
-              <div class="results-box">
-                <div class="results-header">Safety Code Requirements</div>
-                <div class="results-grid">
-                  <div class="result-item">
-                    <span class="result-lbl">Calculated Occupant Load</span>
-                    <span class="result-val" id="fire-res-load">400 People</span>
-                  </div>
-                  <div class="result-item">
-                    <span class="result-lbl">Min Number of Exits Required</span>
-                    <span class="result-val" id="fire-res-exits">2 Exits</span>
-                  </div>
-                  <div class="result-item">
-                    <span class="result-lbl">Total Exit Width Required</span>
-                    <span class="result-val" id="fire-res-width">3.00 meters</span>
-                  </div>
-                  <div class="result-item">
-                    <span class="result-lbl">Max Travel Distance to Exit</span>
-                    <span class="result-val" id="fire-res-dist">30 meters</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="results-box" style="margin-top: 18px;">
-                <div class="results-header">Recommended Extinguisher Allocation</div>
-                <div class="results-grid" id="extinguisher-allocations">
-                  <!-- Generated dynamically in app.js -->
-                </div>
-              </div>
-            </div>
-            
-            <div class="ai-helper-aside">
-              <div class="card ai-card">
-                <div class="ai-header">
-                  <i data-lucide="cpu"></i>
-                  <span>AI Fire Safety Officer</span>
-                </div>
-                <div class="ai-formula-box" id="fire-ai-formula">
-                  Occupants = Area / DensityFactor
-                </div>
-                <div class="ai-explanation-content" id="fire-ai-exp">
-                  Fire safety codes determine occupant counts based on floor density factors. Total exit widths must exceed 10mm per person for typical stairs and 7.5mm for ramps/flat doorways.
-                </div>
-                <span class="ai-code-ref" id="fire-ai-code">NBC 2016 Part 4</span>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        
-        <!-- ================= MECHANICAL VIEW ================= -->
-        <section id="mech-view" class="view-section">
-          <div class="page-grid">
-            <div class="card">
-              <h2 class="card-title"><i data-lucide="settings"></i> Water Pump Selection & Sizing Solver</h2>
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Flow Rate (Q, litres per minute)</label>
-                  <input type="number" id="pump-flow" value="250" min="10" max="10000" step="10" onchange="runPumpCalculator()">
-                </div>
-                <div class="form-group">
-                  <label>Static Lift Height (m, ground to overhead)</label>
-                  <input type="number" id="pump-lift" value="20" min="1" max="200" step="1" onchange="runPumpCalculator()">
-                </div>
-                <div class="form-group">
-                  <label>Pipeline Length (m, vertical + horizontal runs)</label>
-                  <input type="number" id="pump-length" value="35" min="1" max="1000" step="5" onchange="runPumpCalculator()">
-                </div>
-              </div>
-              
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Inner Pipe Diameter (mm)</label>
-                  <select id="pump-diameter" onchange="runPumpCalculator()">
-                    <option value="25">25 mm (1")</option>
-                    <option value="38" selected>38 mm (1.5")</option>
-                    <option value="50">50 mm (2")</option>
-                    <option value="75">75 mm (3")</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Pump & Motor Combined Efficiency (%)</label>
-                  <input type="number" id="pump-eff" value="65" min="10" max="95" step="5" onchange="runPumpCalculator()">
-                </div>
-              </div>
-              
-              <div class="results-box">
-                <div class="results-header">Calculated Sizing Specifications</div>
-                <div class="results-grid">
-                  <div class="result-item">
-                    <span class="result-lbl">Pipe Friction Losses (Hf)</span>
-                    <span class="result-val" id="pump-res-friction">2.41 meters</span>
-                  </div>
-                  <div class="result-item">
-                    <span class="result-lbl">Total Dynamic Head (TDH)</span>
-                    <span class="result-val" id="pump-res-tdh">22.41 meters</span>
-                  </div>
-                  <div class="result-item">
-                    <span class="result-lbl">Required Hydraulic Power</span>
-                    <span class="result-val" id="pump-res-hyd-pwr">0.92 kW</span>
-                  </div>
-                  <div class="result-item">
-                    <span class="result-lbl">Recommended Motor Power</span>
-                    <span class="result-val" id="pump-res-hp">1.9 HP (1.4 kW)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="ai-helper-aside">
-              <div class="card ai-card">
-                <div class="ai-header">
-                  <i data-lucide="cpu"></i>
-                  <span>AI Hydraulic Advisor</span>
-                </div>
-                <div class="ai-formula-box" id="mech-ai-formula">
-                  TDH = Static Head + Friction Head
-                </div>
-                <div class="ai-explanation-content" id="mech-ai-exp">
-                  Calculates pipeline losses using the Darcy-Weisbach / Hazen-Williams approximation. Restricting pipeline diameters or expanding flow volume rapidly scales hydraulic friction.
-                </div>
-                <span class="ai-code-ref" id="mech-ai-code">Hydraulic Institute Standards</span>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        
-        <!-- ================= PROJECT MANAGEMENT VIEW ================= -->
-        <section id="pm-view" class="view-section">
-          <div class="discipline-tabs">
-            <button class="tab-btn active" onclick="switchTab('pm', 'cost-est')">Construction Cost Estimator</button>
-            <button class="tab-btn" onclick="switchTab('pm', 'gantt-chart')">Project Schedule Planner</button>
-          </div>
-          
-          <div class="page-grid">
-            <div>
-              <!-- Tab 1: Construction Estimator -->
-              <div id="pm-cost-est" class="tab-content card">
-                <h2 class="card-title"><i data-lucide="indian-rupee"></i> Construction Cost & Material Quantity Estimator</h2>
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>Planned Floor Area (sq ft)</label>
-                    <input type="number" id="pm-area" value="1800" min="100" max="100000" step="50" onchange="runPMEstimator()">
-                  </div>
-                  <div class="form-group">
-                    <label>Construction Finish Class</label>
-                    <select id="pm-class" onchange="runPMEstimator()">
-                      <option value="basic">Basic Spec (Economic Finish)</option>
-                      <option value="standard" selected>Standard Spec (Recommended Finish)</option>
-                      <option value="premium">Premium Spec (High-End Luxury)</option>
-                    </select>
-                  </div>
-                </div>
-                
-                <div class="results-box">
-                  <div class="results-header">Estimated Total Budget: <span id="pm-res-total-cost" style="color: var(--accent-secondary); float: right;">₹3,960,000</span></div>
-                  <div class="results-grid" style="grid-template-columns: 1fr 1fr; margin-top: 14px;">
-                    <div style="border-right: 1px solid var(--border-glass); padding-right: 16px;">
-                      <h4 style="margin-bottom: 10px; font-size: 13px; text-transform: uppercase; color: var(--text-secondary);">Core Structural Materials</h4>
-                      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                        <tr>
-                          <td style="padding: 6px 0; color: var(--text-secondary);">Cement bags:</td>
-                          <td style="padding: 6px 0; font-weight: 700; text-align: right;" id="pm-mat-cement">720 Bags</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 6px 0; color: var(--text-secondary);">Structural Steel:</td>
-                          <td style="padding: 6px 0; font-weight: 700; text-align: right;" id="pm-mat-steel">7.2 Tons</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 6px 0; color: var(--text-secondary);">River Sand:</td>
-                          <td style="padding: 6px 0; font-weight: 700; text-align: right;" id="pm-mat-sand">3,240 CFT</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 6px 0; color: var(--text-secondary);">Coarse Aggregate:</td>
-                          <td style="padding: 6px 0; font-weight: 700; text-align: right;" id="pm-mat-agg">2,430 CFT</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 6px 0; color: var(--text-secondary);">Red Clay Bricks:</td>
-                          <td style="padding: 6px 0; font-weight: 700; text-align: right;" id="pm-mat-bricks">43,200 Pcs</td>
-                        </tr>
-                      </table>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <div class="contact-method">
+                            <div class="contact-method-icon">📍</div>
+                            <div>
+                                <h4>Main Office</h4>
+                                <p>128 Engineering Plaza, Suite 400<br>San Francisco, CA 94105</p>
+                            </div>
+                        </div>
+                        <div class="contact-method">
+                            <div class="contact-method-icon">✉️</div>
+                            <div>
+                                <h4>Email Enquiries</h4>
+                                <p><a href="mailto:support@beammasterai.com">support@beammasterai.com</a><br><a href="mailto:academic@beammasterai.com">academic@beammasterai.com</a></p>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div style="padding-left: 16px;">
-                      <h4 style="margin-bottom: 10px; font-size: 13px; text-transform: uppercase; color: var(--text-secondary);">Financial Component Breakdown</h4>
-                      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                        <tr>
-                          <td style="padding: 6px 0; color: var(--text-secondary);">Cement cost:</td>
-                          <td style="padding: 6px 0; font-weight: 700; text-align: right;" id="pm-cost-cement">₹613,800</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 6px 0; color: var(--text-secondary);">Steel cost:</td>
-                          <td style="padding: 6px 0; font-weight: 700; text-align: right;" id="pm-cost-steel">₹930,600</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 6px 0; color: var(--text-secondary);">Aggregates/Sand:</td>
-                          <td style="padding: 6px 0; font-weight: 700; text-align: right;" id="pm-cost-sandagg">₹712,800</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 6px 0; color: var(--text-secondary);">Fittings & Finishes:</td>
-                          <td style="padding: 6px 0; font-weight: 700; text-align: right;" id="pm-cost-finishes">₹950,400</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 6px 0; color: var(--text-secondary);">Contractor Labor:</td>
-                          <td style="padding: 6px 0; font-weight: 700; text-align: right;" id="pm-cost-labor">₹752,400</td>
-                        </tr>
-                      </table>
+                    <div class="contact-form-card">
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <label for="contact-name">Full Name</label>
+                                <input type="text" id="contact-name" class="input-control" placeholder="Dr. John Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-email">Email Address</label>
+                                <input type="email" id="contact-email" class="input-control" placeholder="john.doe@university.edu" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-message">Your Message</label>
+                                <textarea id="contact-message" class="input-control" rows="5" placeholder="Write your enquiry here..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width:100%;">Send Message</button>
+                        </form>
                     </div>
-                  </div>
                 </div>
-              </div>
-              
-              <!-- Tab 2: Project Schedule -->
-              <div id="pm-gantt-chart" class="tab-content card" style="display: none;">
-                <h2 class="card-title"><i data-lucide="calendar"></i> Construction Schedule Planner (Gantt Chart)</h2>
-                <div class="form-grid">
-                  <div class="form-group">
-                    <label>Target Start Date</label>
-                    <input type="date" id="gantt-start-date" onchange="runGanttPlanner()">
-                  </div>
-                  <div class="form-group">
-                    <label>Average Crew Size</label>
-                    <input type="number" id="gantt-crew" value="12" min="4" max="100" step="1" onchange="runGanttPlanner()">
-                  </div>
-                </div>
-                
-                <div class="gantt-chart">
-                  <div class="gantt-grid" id="gantt-chart-grid">
-                    <!-- Populated dynamically in app.js -->
-                  </div>
-                </div>
-              </div>
             </div>
-            
-            <div class="ai-helper-aside">
-              <div class="card ai-card">
-                <div class="ai-header">
-                  <i data-lucide="cpu"></i>
-                  <span>AI Project Manager</span>
-                </div>
-                <div class="ai-formula-box" id="pm-ai-formula">
-                  Budget = Area * Specification Rate
-                </div>
-                <div class="ai-explanation-content" id="pm-ai-exp">
-                  Cost estimation models apply local material weight constants to derive absolute quantities. Execution timeline sequencing applies standard CPM scheduling constraints.
-                </div>
-                <span class="ai-code-ref" id="pm-ai-code">R.S. Means Estimates</span>
-              </div>
-            </div>
-          </div>
         </section>
-        
-        <!-- ================= GADGETS VIEW ================= -->
-        <section id="gadgets-view" class="view-section">
-          <div class="page-grid" style="grid-template-columns: 1fr;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
-              
-              <!-- Gadget 1: Rebar Weight Sizer -->
-              <div class="card" style="margin-bottom: 0;">
-                <h2 class="card-title"><i data-lucide="dumbbell"></i> Steel Rebar Weight Sizer</h2>
-                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Calculate the weight of reinforcing steel rods instantly using standard sizing formulas.</p>
-                <div class="form-group" style="margin-bottom: 12px;">
-                  <label>Rebar Diameter (D, mm)</label>
-                  <select id="gadget-rebar-dia" onchange="runRebarCalculator()">
-                    <option value="8">8 mm</option>
-                    <option value="10">10 mm</option>
-                    <option value="12" selected>12 mm</option>
-                    <option value="16">16 mm</option>
-                    <option value="20">20 mm</option>
-                    <option value="25">25 mm</option>
-                    <option value="32">32 mm</option>
-                  </select>
-                </div>
-                <div class="form-group" style="margin-bottom: 16px;">
-                  <label>Total Length (L, meters)</label>
-                  <input type="number" id="gadget-rebar-len" value="12" min="1" max="1000" step="1" oninput="runRebarCalculator()">
-                </div>
-                <div class="results-box" style="margin-top: 10px;">
-                  <div class="results-header">Calculated Rebar Weight</div>
-                  <div style="font-family: var(--font-heading); font-size: 24px; font-weight: 800; color: var(--accent-success); text-align: center;" id="gadget-rebar-res">
-                    10.65 kg
-                  </div>
-                  <div style="font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 4px;">
-                    Formula: W = (D² / 162.2) * L
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Gadget 2: Interactive Vastu Compass -->
-              <div class="card" style="margin-bottom: 0;">
-                <h2 class="card-title"><i data-lucide="compass"></i> Interactive Vastu Compass</h2>
-                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Rotate the compass to locate optimal coordinates for room mapping on site.</p>
-                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;">
-                  <div style="position: relative; width: 140px; height: 140px; margin: 10px 0; transition: transform var(--transition-slow); transform: rotate(0deg);" id="vastu-compass-ring">
-                    <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
-                      <circle cx="50" cy="50" r="48" fill="var(--bg-tertiary)" stroke="var(--border-glass)" stroke-width="1.5"/>
-                      <circle cx="50" cy="50" r="40" fill="none" stroke="var(--border-glass)" stroke-dasharray="2"/>
-                      <line x1="50" y1="5" x2="50" y2="95" stroke="var(--border-glass)" stroke-width="0.5"/>
-                      <line x1="5" y1="50" x2="95" y2="50" stroke="var(--border-glass)" stroke-width="0.5"/>
-                      <polygon points="50,15 45,50 55,50" fill="#ef4444"/>
-                      <polygon points="50,85 45,50 55,50" fill="var(--text-muted)"/>
-                      <text x="50" y="12" font-size="7" font-weight="bold" fill="#ef4444" text-anchor="middle">N</text>
-                      <text x="88" y="52" font-size="7" font-weight="bold" fill="var(--text-primary)" text-anchor="middle">E</text>
-                      <text x="50" y="93" font-size="7" font-weight="bold" fill="var(--text-primary)" text-anchor="middle">S</text>
-                      <text x="12" y="52" font-size="7" font-weight="bold" fill="var(--text-primary)" text-anchor="middle">W</text>
-                    </svg>
-                  </div>
-                  <div class="form-group" style="width: 100%;">
-                    <label>Compass Orientation Angle (degrees)</label>
-                    <input type="range" id="vastu-compass-angle" min="0" max="360" value="0" style="width: 100%; accent-color: var(--accent-primary);" oninput="rotateVastuCompass(this.value)">
-                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-                      <span id="compass-angle-text">0° (North aligned)</span>
-                      <span id="compass-vastu-sector" style="color: var(--accent-secondary); font-weight:700;">Eshanya Zone</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Gadget 3: Quick Field Notebook -->
-              <div class="card" style="margin-bottom: 0;">
-                <h2 class="card-title"><i data-lucide="edit-3"></i> Field Engineer's Notepad</h2>
-                <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">Jot down dimensions and calculations. Notes save to local storage automatically.</p>
-                <textarea id="gadget-notes" style="width: 100%; height: 120px; background-color: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: var(--radius-sm); padding: 10px; color: var(--text-primary); font-family: var(--font-body); font-size: 13px; resize: none; outline: none;" placeholder="Enter site notes here..." oninput="saveGadgetNotes()"></textarea>
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-                  <span style="font-size: 10px; color: var(--text-muted);" id="gadget-notes-status">Auto-saved to local cache</span>
-                  <button class="btn-secondary" style="padding: 6px 12px; font-size: 11px;" onclick="clearGadgetNotes()">Clear Notes</button>
-                </div>
-              </div>
-              
-            </div>
-          </div>
-        </section>
-        
-      </div>
+
     </main>
-  </div>
-  
-  <!-- Video Player Modal overlay -->
-  <div class="modal-overlay" id="video-modal" onclick="closeVideoModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <h3 id="modal-video-title" style="font-family: var(--font-heading);">Video Tutorial Player</h3>
-        <button class="icon-btn" onclick="closeVideoModal()">
-          <i data-lucide="x"></i>
-        </button>
-      </div>
-      <div class="modal-body">
-        <video id="modal-video-player" controls src=""></video>
-      </div>
-    </div>
-    </div>
-    
-    <!-- Profile Editor Modal overlay -->
-    <div class="modal-overlay" id="profile-modal" onclick="closeProfileModal()">
-      <div class="modal-content" onclick="event.stopPropagation()" style="max-width: 440px;">
-        <div class="modal-header">
-          <h3 style="font-family: var(--font-heading);">Edit Profile & Customize Labels</h3>
-          <button class="icon-btn" onclick="closeProfileModal()">
-            <i data-lucide="x"></i>
-          </button>
+
+    <!-- ================= MODAL DISPLAY VIEW ================= -->
+    <div class="modal-overlay" id="content-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close-btn">&times;</button>
+            <div id="modal-content-area">
+                <!-- Populated dynamically via JS -->
+            </div>
         </div>
-        <div class="modal-body" style="padding: 24px; aspect-ratio: auto; background-color: var(--bg-secondary); max-height: 480px; overflow-y: auto;">
-          <h4 style="margin-bottom: 12px; font-size: 12px; text-transform: uppercase; color: var(--accent-primary); border-bottom: 1px dashed var(--border-glass); padding-bottom: 4px;">User Profile</h4>
-          <div class="form-group" style="margin-bottom: 16px;">
-            <label>Engineer Full Name</label>
-            <input type="text" id="profile-input-name" value="Er. Durga Prasad">
-          </div>
-          <div class="form-group" style="margin-bottom: 16px;">
-            <label>Specialization / Role</label>
-            <input type="text" id="profile-input-role" value="Senior Structural Eng.">
-          </div>
-          
-          <h4 style="margin-top: 24px; margin-bottom: 12px; font-size: 12px; text-transform: uppercase; color: var(--accent-secondary); border-bottom: 1px dashed var(--border-glass); padding-bottom: 4px;">Platform Brand & Menu Labels</h4>
-          <div class="form-group" style="margin-bottom: 16px;">
-            <label>Platform Logo Brand Name</label>
-            <input type="text" id="settings-input-logo" value=" EngineerDesign Hub">
-          </div>
-          
-          <div style="border: 1px solid var(--border-glass); border-radius: var(--radius-sm); padding: 12px; background-color: var(--bg-tertiary); max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;">
-            <div style="font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Rename Sidebar Menu Tabs</div>
+    </div>
+
+    <!-- ================= AI ASSISTANT DRAWER PANEL ================= -->
+    <div class="ai-panel-toggle" id="ai-drawer-toggle" title="Consult BeamMaster AI Assistant">💬</div>
+    
+    <div class="ai-drawer" id="ai-drawer-panel">
+        <div class="ai-header">
+            <h3>🤖 BeamMaster AI <span class="ai-status"></span></h3>
+            <button class="modal-close" id="ai-drawer-close" style="position:static; width:24px; height:24px;">&times;</button>
+        </div>
+        
+        <div class="ai-chat-body" id="ai-chat-messages">
+            <div class="chat-msg chat-msg-ai">
+                👋 Hello! I am your <strong>BeamMaster AI Engineering Assistant</strong>.<br><br>
+                Ask me structural engineering questions or click below to analyze your live setup!
+            </div>
             
-            <div class="form-group" style="gap: 4px;">
-              <label style="font-size: 11px;">Home Dashboard</label>
-              <input type="text" id="settings-input-home" value="Home Dashboard" style="padding: 6px 10px; font-size: 12px;">
+            <div class="ai-quick-qs">
+                <button class="quick-q-btn" id="btn-ai-explain-beam">🔍 Explain Active Beam Setup</button>
+                <button class="quick-q-btn" data-q="What is bending moment?">📐 What is Bending Moment (BMD)?</button>
+                <button class="quick-q-btn" data-q="How are support reactions calculated?">⚖️ How to compute reactions?</button>
+                <button class="quick-q-btn" data-q="What are the sign conventions?">🔄 What are the sign conventions?</button>
+                <button class="quick-q-btn" data-q="Explain beam deflection formula">🌊 Explain deflection formulas</button>
             </div>
-            <div class="form-group" style="gap: 4px;">
-              <label style="font-size: 11px;">Civil & Structural</label>
-              <input type="text" id="settings-input-civil" value="Structural Eng" style="padding: 6px 10px; font-size: 12px;">
-            </div>
-            <div class="form-group" style="gap: 4px;">
-              <label style="font-size: 11px;">Architecture & Vastu</label>
-              <input type="text" id="settings-input-arch" value="Arch & Vastu" style="padding: 6px 10px; font-size: 12px;">
-            </div>
-            <div class="form-group" style="gap: 4px;">
-              <label style="font-size: 11px;">Electrical & Solar</label>
-              <input type="text" id="settings-input-elec" value="Electrical & Solar" style="padding: 6px 10px; font-size: 12px;">
-            </div>
-            <div class="form-group" style="gap: 4px;">
-              <label style="font-size: 11px;">Plumbing & Tanks</label>
-              <input type="text" id="settings-input-plumb" value="Plumbing & Tanks" style="padding: 6px 10px; font-size: 12px;">
-            </div>
-            <div class="form-group" style="gap: 4px;">
-              <label style="font-size: 11px;">HVAC & Cooling</label>
-              <input type="text" id="settings-input-hvac" value="HVAC & Cooling" style="padding: 6px 10px; font-size: 12px;">
-            </div>
-            <div class="form-group" style="gap: 4px;">
-              <label style="font-size: 11px;">Fire Safety (NBC)</label>
-              <input type="text" id="settings-input-fire" value="Fire Safety (NBC)" style="padding: 6px 10px; font-size: 12px;">
-            </div>
-            <div class="form-group" style="gap: 4px;">
-              <label style="font-size: 11px;">Mechanical Pumps</label>
-              <input type="text" id="settings-input-mech" value="Mechanical Pumps" style="padding: 6px 10px; font-size: 12px;">
-            </div>
-            <div class="form-group" style="gap: 4px;">
-              <label style="font-size: 11px;">PM, Cost & Schedule</label>
-              <input type="text" id="settings-input-pm" value="PM, Cost & Schedule" style="padding: 6px 10px; font-size: 12px;">
-            </div>
-            <div class="form-group" style="gap: 4px;">
-              <label style="font-size: 11px;">Engineering Gadgets</label>
-              <input type="text" id="settings-input-gadgets" value="Engineering Gadgets" style="padding: 6px 10px; font-size: 12px;">
-            </div>
-          </div>
-          
-          <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
-            <button class="btn-secondary" onclick="closeProfileModal()">Cancel</button>
-            <button class="btn-primary" onclick="saveProfileChanges()">Save Changes</button>
-          </div>
         </div>
+        
+        <div class="ai-input-bar">
+            <input type="text" id="ai-chat-input" placeholder="Ask about SFD, BMD, reactions...">
+            <button class="btn btn-primary btn-sm" id="btn-ai-send">Send</button>
+        </div>
+    </div>
+
+    <!-- AdSense Ready Footer Banner Slot -->
+    <div class="container" style="margin-top: 2rem;">
+        <div class="adsense-banner">
+            ADVERTISEMENT PLACEHOLDER (AdSense Footer - 728x90)
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-logo-desc">
+                <a href="#" class="logo">
+                    <span class="logo-icon">B</span>
+                    <span>BeamMaster <span style="color: var(--primary);">AI</span></span>
+                </a>
+                <p>Advanced online structural analysis and beam simulation tool built with high mathematical precision and modern animations.</p>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Beam Tools</h4>
+                <ul class="footer-links">
+                    <li><a href="#" class="footer-link-direct" data-action="simply_supported">Simply Supported Beam</a></li>
+                    <li><a href="#" class="footer-link-direct" data-action="cantilever">Cantilever Beam</a></li>
+                    <li><a href="#" class="footer-link-direct" data-action="fixed">Fixed Support Beam</a></li>
+                    <li><a href="#" class="footer-link-direct" data-action="overhanging">Overhanging Beam</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="#" class="footer-link-view" data-target="tutorials-section">Worked Examples</a></li>
+                    <li><a href="#" class="footer-link-view" data-target="blog-section">Engineering Blog</a></li>
+                    <li><a href="#" class="footer-link-view" data-target="about-section">About Project</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="#" class="footer-link-modal" data-modal="privacy">Privacy Policy</a></li>
+                    <li><a href="#" class="footer-link-modal" data-modal="terms">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="container footer-bottom">
+            <div>
+                &copy; 2026 BeamMaster AI. All rights reserved. Designed for students and structural engineers worldwide.
+            </div>
+            <div class="footer-socials">
+                <a href="#" title="Github Repository">Github</a>
+                <a href="#" title="LinkedIn Engineering">LinkedIn</a>
+                <a href="#" title="Twitter Dev updates">Twitter</a>
+            </div>
+        </div>
+    </footer>
+
+    </div><!-- end #app-shell -->
+
+    <!-- Firebase Auth module (must load after Firebase SDK) -->
+    <script src="js/firebase-auth.js"></script>
+
+    <!-- Load data models and AI drawer -->
+    <script src="js/blog-data.js"></script>
+    <script src="js/tutorial-data.js"></script>
+    <script src="js/ai-assistant.js"></script>
     
-    <!-- Toast Notification Popup -->
-    <div id="toast-notification" class="toast-popup">Copied successfully!</div>
+    <!-- Load layout managers and math engine -->
+    <script src="js/calculator.js"></script>
+    <script src="js/diagrams.js"></script>
     
-    <script src="data.js"></script>
-  <script src="app.js"></script>
+    <!-- Main application routing script -->
+    <script src="js/app.js"></script>
 </body>
 </html>
