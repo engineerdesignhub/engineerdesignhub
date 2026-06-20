@@ -6,7 +6,7 @@ class BeamDiagrams {
     constructor(canvasId, sfdId, bmdId, deflectionId) {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
-        
+
         // Chart container IDs
         this.sfdId = sfdId;
         this.bmdId = bmdId;
@@ -62,7 +62,7 @@ class BeamDiagrams {
             if (this.beamType === 'overhanging') {
                 const distA = Math.abs(pos.x - this.meterToPixel(this.supports.a));
                 const distB = Math.abs(pos.x - this.meterToPixel(this.supports.b));
-                
+
                 if (distA < 15 && Math.abs(pos.y - (this.beamY + 15)) < 15) {
                     this.draggedSupportType = 'a';
                     return;
@@ -114,7 +114,7 @@ class BeamDiagrams {
             if (this.beamType === 'overhanging') {
                 const distA = Math.abs(pos.x - this.meterToPixel(this.supports.a));
                 const distB = Math.abs(pos.x - this.meterToPixel(this.supports.b));
-                
+
                 if (distA < 15 && Math.abs(pos.y - (this.beamY + 15)) < 15) {
                     cursor = 'ew-resize';
                     this.hoveredSupportType = 'a';
@@ -173,7 +173,7 @@ class BeamDiagrams {
                         this.supports.b = targetPos;
                     }
                 }
-                
+
                 if (this.onBeamConfigChange) this.onBeamConfigChange();
                 this.draw();
             } else if (this.draggedLoadIdx !== null) {
@@ -334,7 +334,7 @@ class BeamDiagrams {
         const ctx = this.ctx;
         const p0 = this.meterToPixel(0);
         const pL = this.meterToPixel(this.beamLength);
-        
+
         ctx.fillStyle = isDark ? '#4b5563' : '#64748b';
         ctx.strokeStyle = isDark ? '#9ca3af' : '#475569';
         ctx.lineWidth = 2;
@@ -371,11 +371,11 @@ class BeamDiagrams {
         const drawFixedSupport = (px, isLeft) => {
             const sY = this.beamY - 12;
             const h = this.beamHeight + 24;
-            
+
             // Draw support wall
             ctx.fillStyle = isDark ? '#374151' : '#cbd5e1';
             ctx.fillRect(px - (isLeft ? 6 : 0), sY, 6, h);
-            
+
             ctx.strokeStyle = isDark ? '#4b5563' : '#94a3b8';
             ctx.lineWidth = 1.5;
             // Hatchings
@@ -404,7 +404,7 @@ class BeamDiagrams {
             // Drag support highlights
             ctx.fillStyle = (this.hoveredSupportType === 'a') ? '#3b82f6' : (isDark ? '#4b5563' : '#64748b');
             drawTriangleSupport(this.meterToPixel(this.supports.a), true);
-            
+
             ctx.fillStyle = (this.hoveredSupportType === 'b') ? '#3b82f6' : (isDark ? '#4b5563' : '#64748b');
             drawTriangleSupport(this.meterToPixel(this.supports.b), false);
         }
@@ -420,13 +420,13 @@ class BeamDiagrams {
         const drawArrow = (px, val, label) => {
             const startY = this.beamY + this.beamHeight + 50;
             const endY = this.beamY + this.beamHeight + 5;
-            
+
             // Line
             ctx.beginPath();
             ctx.moveTo(px, startY);
             ctx.lineTo(px, endY);
             ctx.stroke();
-            
+
             // Arrowhead
             ctx.beginPath();
             ctx.moveTo(px, endY);
@@ -481,13 +481,13 @@ class BeamDiagrams {
 
     drawLoads(isDark) {
         const ctx = this.ctx;
-        
+
         ctx.font = '600 11px Inter, sans-serif';
         ctx.textAlign = 'center';
 
         this.loads.forEach((load, idx) => {
             const isHovered = (this.hoveredLoadIdx === idx || this.draggedLoadIdx === idx);
-            
+
             if (load.type === 'point') {
                 ctx.strokeStyle = isHovered ? '#3b82f6' : '#ef4444'; // Red for point loads
                 ctx.fillStyle = isHovered ? '#3b82f6' : '#ef4444';
@@ -605,7 +605,7 @@ class BeamDiagrams {
 
         // Helper to extract x coordinates and clean duplicate values for labels
         const xLabels = sfdData.map(pt => pt.x.toFixed(2));
-        
+
         // 1. Plot Shear Force Diagram (SFD)
         const sfdCtx = document.getElementById(this.sfdId).getContext('2d');
         const sfdGradient = sfdCtx.createLinearGradient(0, 0, 0, 200);

@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1983793556229388" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BeamMaster AI | Free Online SFD &amp; BMD Calculator &amp; Beam Analysis</title>
@@ -27,6 +28,7 @@
 
     <!-- CSS stylesheet -->
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/search.js" defer></script>
     
     <!-- Firebase SDK CDN (compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -34,6 +36,51 @@
 
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="application/ld+json">
+{
+      "@context": "https://schema.org",
+      "@graph": [
+            {
+                  "@type": "WebSite",
+                  "@id": "https://beammasterai.com/#website",
+                  "url": "https://beammasterai.com",
+                  "name": "BeamMaster AI",
+                  "description": "AI-Powered Structural Analysis Suite \u2014 Free Online SFD & BMD Calculator",
+                  "publisher": {
+                        "@id": "https://beammasterai.com/#organization"
+                  },
+                  "potentialAction": {
+                        "@type": "SearchAction",
+                        "target": "https://beammasterai.com/?s={search_term_string}",
+                        "query-input": "required name=search_term_string"
+                  }
+            },
+            {
+                  "@type": "Organization",
+                  "@id": "https://beammasterai.com/#organization",
+                  "name": "BeamMaster AI",
+                  "url": "https://beammasterai.com",
+                  "description": "Free online structural engineering analysis tools and educational content.",
+                  "founder": {
+                        "@type": "Person",
+                        "name": "Er. P. Durga Prasad",
+                        "jobTitle": "Senior Structural Engineer"
+                  },
+                  "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": "Hyderabad",
+                        "addressRegion": "Telangana",
+                        "addressCountry": "IN"
+                  },
+                  "contactPoint": {
+                        "@type": "ContactPoint",
+                        "email": "support@beammasterai.com",
+                        "contactType": "customer support"
+                  }
+            }
+      ]
+}
+    </script>
 </head>
 <body>
 
@@ -282,12 +329,7 @@
                 </div>
             </div>
 
-            <!-- AdSense Ready Slot 1 -->
-            <div class="container">
-                <div class="adsense-banner">
-                    ADVERTISEMENT PLACEHOLDER (AdSense Banner - 728x90)
-                </div>
-            </div>
+
 
             <!-- Feature cards block -->
             <div class="features-section">
@@ -634,8 +676,8 @@
                         <div class="contact-method">
                             <div class="contact-method-icon">📍</div>
                             <div>
-                                <h4>Main Office</h4>
-                                <p>128 Engineering Plaza, Suite 400<br>San Francisco, CA 94105</p>
+                                <h4>Location</h4>
+                                <p>Hyderabad, Telangana<br>India</p>
                             </div>
                         </div>
                         <div class="contact-method">
@@ -710,12 +752,7 @@
         </div>
     </div>
 
-    <!-- AdSense Ready Footer Banner Slot -->
-    <div class="container" style="margin-top: 2rem;">
-        <div class="adsense-banner">
-            ADVERTISEMENT PLACEHOLDER (AdSense Footer - 728x90)
-        </div>
-    </div>
+
 
     <!-- Footer -->
     <footer>
@@ -752,6 +789,7 @@
                 <ul class="footer-links">
                     <li><a href="#" class="footer-link-modal" data-modal="privacy">Privacy Policy</a></li>
                     <li><a href="#" class="footer-link-modal" data-modal="terms">Terms of Service</a></li>
+                    <li><a href="disclaimer.html" class="footer-link">Disclaimer</a></li>
                 </ul>
             </div>
         </div>
@@ -784,5 +822,21 @@
     
     <!-- Main application routing script -->
     <script src="js/app.js"></script>
+    <script src="js/cookie-consent.js" defer></script>
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top-btn" aria-label="Back to top" title="Back to top">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </button>
+    <script>
+    (function(){
+        var btn=document.getElementById('back-to-top-btn');
+        if(!btn)return;
+        window.addEventListener('scroll',function(){
+            if(window.scrollY>300){btn.classList.add('visible')}
+            else{btn.classList.remove('visible')}
+        });
+        btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+    })();
+    </script>
 </body>
 </html>

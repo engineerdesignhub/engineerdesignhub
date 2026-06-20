@@ -3,39 +3,140 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-    <!-- Main Home Page & Calculator -->
+    <!-- Main Pages -->
     <url>
         <loc>https://beammasterai.com/</loc>
-        <lastmod>2026-05-30</lastmod>
+        <lastmod>2026-06-20</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.00</priority>
     </url>
-    <!-- Worked Examples / Learning Center Section -->
     <url>
-        <loc>https://beammasterai.com/#tutorials</loc>
-        <lastmod>2026-05-30</lastmod>
+        <loc>https://beammasterai.com/about.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.70</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/contact.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.60</priority>
+    </url>
+    <!-- Legal Pages -->
+    <url>
+        <loc>https://beammasterai.com/privacy.html</loc>
+        <lastmod>2026-06-11</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.30</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/terms.html</loc>
+        <lastmod>2026-06-11</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.30</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/disclaimer.html</loc>
+        <lastmod>2026-06-11</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.30</priority>
+    </url>
+    <!-- Articles Index -->
+    <url>
+        <loc>https://beammasterai.com/articles/</loc>
+        <lastmod>2026-06-20</lastmod>
         <changefreq>weekly</changefreq>
+        <priority>0.90</priority>
+    </url>
+    <!-- Individual Articles -->
+    <url>
+        <loc>https://beammasterai.com/articles/understanding-shear-force-bending-moment.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
         <priority>0.80</priority>
     </url>
-    <!-- Engineering Blog Section -->
     <url>
-        <loc>https://beammasterai.com/#blog</loc>
-        <lastmod>2026-05-30</lastmod>
-        <changefreq>weekly</changefreq>
+        <loc>https://beammasterai.com/articles/concrete-mix-design-is-10262.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
         <priority>0.80</priority>
     </url>
-    <!-- About Us Section -->
     <url>
-        <loc>https://beammasterai.com/#about</loc>
-        <lastmod>2026-05-30</lastmod>
+        <loc>https://beammasterai.com/articles/geopolymer-concrete-future.html</loc>
+        <lastmod>2026-06-20</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.50</priority>
+        <priority>0.80</priority>
     </url>
-    <!-- Contact Section -->
     <url>
-        <loc>https://beammasterai.com/#contact</loc>
-        <lastmod>2026-05-30</lastmod>
+        <loc>https://beammasterai.com/articles/ai-structural-analysis.html</loc>
+        <lastmod>2026-06-20</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.50</priority>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/articles/green-building-materials.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/articles/staad-pro-vs-etabs.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/articles/rcc-beam-design-limit-state.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/articles/fly-ash-geopolymer-applications.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/articles/bim-civil-engineering.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/articles/earthquake-resistant-design.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/articles/sustainable-concrete-carbon.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/articles/machine-learning-material-science.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/articles/steel-fiber-reinforced-concrete.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/articles/autocad-vs-revit-structural.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
+    </url>
+    <url>
+        <loc>https://beammasterai.com/articles/prestressed-concrete-design.html</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.80</priority>
     </url>
 </urlset>

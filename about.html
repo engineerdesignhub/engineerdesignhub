@@ -2,6 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1983793556229388" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - BeamMaster AI | Engineering Analysis Platform</title>
@@ -14,6 +15,7 @@
     <meta property="og:description" content="Learn about BeamMaster AI and the engineering team behind this free structural analysis platform.">
     <meta property="og:url" content="https://beammasterai.com/about.html">
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/search.js" defer></script>
 </head>
 <body>
     <!-- Header Navigation -->
@@ -44,7 +46,7 @@
 
     <main>
         <div class="container">
-            <nav class="breadcrumb">
+            <nav class="breadcrumb" aria-label="Breadcrumb">
                 <a href="index.html">Home</a>
                 <span class="separator">›</span>
                 <span class="current">About Us</span>
@@ -224,6 +226,22 @@
         burger.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
+    </script>
+    <script src="js/cookie-consent.js" defer></script>
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top-btn" aria-label="Back to top" title="Back to top">
+        <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </button>
+    <script>
+    (function(){
+        var btn=document.getElementById('back-to-top-btn');
+        if(!btn)return;
+        window.addEventListener('scroll',function(){
+            if(window.scrollY>300){btn.classList.add('visible')}
+            else{btn.classList.remove('visible')}
+        });
+        btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+    })();
     </script>
 </body>
 </html>
